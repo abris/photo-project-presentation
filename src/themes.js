@@ -17,6 +17,12 @@ window.UK_THEMES = [
     },
     motion: { photoFade: 0.30, photoOut: 0.34, kenBurns: 1 },
     fx: { filter: '', grain: false, vignette: false },
+    // Підпис на текстових кадрах: волосяна рамка-кант + ледь тепле затемнення кутів
+    page: {
+      frame: true,
+      gradient: 'radial-gradient(ellipse at center, rgba(0,0,0,0) 68%, rgba(38,34,27,0.06) 100%)',
+      grain: false, accentTick: false, corner: '',
+    },
   },
   {
     id: 'modern',
@@ -30,6 +36,12 @@ window.UK_THEMES = [
     },
     motion: { photoFade: 0.18, photoOut: 0.28, kenBurns: 0.4 },
     fx: { filter: '', grain: false, vignette: false },
+    // Підпис: коротка акцентна риска-маркер угорі ліворуч + холодний градієнт знизу
+    page: {
+      accentTick: true,
+      gradient: 'linear-gradient(180deg, rgba(20,22,26,0) 58%, rgba(27,58,107,0.05) 100%)',
+      frame: false, grain: false, corner: '',
+    },
   },
   {
     id: 'archive',
@@ -43,5 +55,12 @@ window.UK_THEMES = [
     },
     motion: { photoFade: 0.32, photoOut: 0.36, kenBurns: 1 },
     fx: { filter: 'sepia(0.34) contrast(1.05) brightness(0.98) saturate(0.88)', grain: true, vignette: true },
+    // Підпис: легке зерно на тлі + тепла віньєтка + архівна моно-позначка в кутку
+    page: {
+      grain: true,
+      gradient: 'radial-gradient(ellipse at center, rgba(0,0,0,0) 58%, rgba(42,32,24,0.14) 100%)',
+      corner: 'арх. фонд мкн · 2024',
+      frame: false, accentTick: false,
+    },
   },
 ];
