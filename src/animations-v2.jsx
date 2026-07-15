@@ -830,19 +830,16 @@ function PlaybackBar({ time, duration, playing, onPlayPause, onReset, onSeek, on
     return x * duration;
   }, [duration]);
 
+  // Only a click/drag seeks. Passive hover used to preview the hovered time
+  // on the main canvas (displayTime = hoverTime ?? time), which made the whole
+  // frame jump the instant the cursor crossed the track — jarring, since the
+  // preview surface IS the piece itself, not a thumbnail. Hover now no-ops.
   const onTrackMove = (e) => {
-    if (!trackRef.current) return;
-    const t = timeFromEvent(e);
-    if (dragging) {
-      onSeek(t);
-    } else {
-      onHover(t);
-    }
+    if (!trackRef.current || !dragging) return;
+    onSeek(timeFromEvent(e));
   };
 
-  const onTrackLeave = () => {
-    if (!dragging) onHover(null);
-  };
+  const onTrackLeave = () => {};
 
   const onTrackDown = (e) => {
     setDragging(true);
