@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>УКРАЇНЦІ — фотопроєкт</title>
+
+<link rel="stylesheet" href="assets/fonts/fonts.css">
+<style>
+  html, body { height: 100%; margin: 0; background: #F3EFE7; }
+  body { font-family: 'PT Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; overflow: hidden; }
+  #root { position: fixed; inset: 0; }
+  a { color: #9A5B3B; }
+  a:hover { color: #7d4a30; }
+  button { font-family: inherit; }
+  /* Заставка, доки вантажаться скрипти */
+  #boot-splash { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: #F3EFE7; z-index: 5; }
+  #boot-splash .word { font: 500 92px 'Playfair Display', Georgia, serif; letter-spacing: 0.06em; color: #26221B; }
+</style>
+
+<!-- Бібліотеки середовища виконання -->
+<script src="assets/js/react.js"></script>
+<script src="assets/js/react-dom.js"></script>
+<script src="assets/js/babel.min.js"></script>
+
+<!-- Контент і налаштування (звичайний JS) -->
+<script src="src/config.js"></script>
+</head>
+<body>
+<div id="root"><div id="boot-splash"><div class="word">УКРАЇНЦІ</div></div></div>
+
+<script>
+/* Завантажуємо JSX-модулі по черзі: спершу рушій анімації (SceneStage),
+ * потім панель налаштувань, потім сцени. Кожен трансформуємо Babel-ом «на льоту». */
+(async function boot() {
+  const parts = [
+    'src/animations-v2.jsx',   // window.SceneStage, useScene, useTweaks-рушій
+    'src/tweaks-panel.jsx',    // window.TweaksPanel, TweakRadio, TweakToggle, useTweaks
+    'src/scenes.jsx',          // window.UkraintsiVideo
+  ];
+  try {
+    for (const url of parts) {
+      const src = await (await fetch(url)).text();
+      const wrapped = '(function(){\n' + src + '\n})();';
+      const code = Babel.transform(wrapped, { presets: ['react'] }).code;
+      (0, eval)(code);
+    }
+    const mount = () => {
+      if (!window.UkraintsiVideo) return setTimeout(mount, 30);
+      const splash = document.getElementById('boot-splash');
+      if (splash) splash.remove();
+      ReactDOM.createRoot(document.getElementById('root'))
+        .render(React.createElement(window.UkraintsiVideo));
+    };
+    mount();
+  } catch (e) {
+    document.getElementById('root').innerHTML =
+      '<div style="padding:40px;font:16px sans-serif;color:#26221B">Помилка завантаження: ' +
+      (e && e.message ? e.message : e) + '<br><br>Запустіть проєкт через локальний сервер ' +
+      '(див. README.md), а не подвійним кліком по файлу.</div>';
+    console.error(e);
+  }
+})();
+</script>
+</body>
+</html>
