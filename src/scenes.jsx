@@ -32,72 +32,6 @@ function theme() {
   });
 }
 
-/* ---------- Seasonal atmosphere ----------
- * Particles use fixed positions and scene progress only. This keeps timeline
- * scrubbing and exported frames stable instead of producing random weather. */
-const SEASON_OF = { 'ФотоЗима': 'winter', 'ФотоВесна': 'spring', 'ФотоЛіто': 'summer', 'ФотоОсінь': 'autumn' };
-const TITLE_SEASON_OF = { 'ЗИМА': 'winter', 'ВЕСНА': 'spring', 'ЛІТО': 'summer', 'ОСІНЬ': 'autumn' };
-const ATMOSPHERE_PARTICLES = {
-  winter: [
-    [8, 6, 12, 0.38, 0.15], [23, 21, 7, 0.28, 0.72], [39, 8, 15, 0.32, 0.4],
-    [58, 30, 8, 0.3, 0.9], [77, 12, 13, 0.36, 0.22], [91, 38, 9, 0.28, 0.64],
-    [14, 61, 11, 0.34, 0.56], [34, 76, 7, 0.26, 0.1], [67, 66, 14, 0.35, 0.82],
-    [84, 84, 8, 0.28, 0.33], [47, 92, 12, 0.32, 0.48], [4, 88, 6, 0.25, 0.95],
-  ],
-  spring: [
-    [9, 12, 13, 0.22, 0.2], [28, 7, 9, 0.18, 0.64], [74, 16, 14, 0.2, 0.5],
-    [91, 42, 10, 0.18, 0.85], [18, 69, 12, 0.2, 0.35], [56, 84, 9, 0.17, 0.74],
-  ],
-  summer: [
-    [13, 18, 7, 0.17, 0.3], [31, 38, 5, 0.14, 0.8], [70, 14, 6, 0.16, 0.58],
-    [88, 55, 8, 0.15, 0.15], [47, 79, 5, 0.14, 0.67], [8, 89, 6, 0.13, 0.46],
-  ],
-  autumn: [
-    [7, 10, 14, 0.25, 0.12], [25, 25, 11, 0.21, 0.7], [71, 9, 15, 0.24, 0.42],
-    [90, 32, 12, 0.22, 0.9], [17, 70, 13, 0.24, 0.58], [48, 84, 11, 0.2, 0.26],
-    [82, 76, 14, 0.23, 0.8],
-  ],
-};
-
-function SeasonAtmosphere({ season, progress, phase = 'title', enabled = true }) {
-  if (!enabled || !season || !ATMOSPHERE_PARTICLES[season]) return null;
-  const title = phase === 'title';
-  const opacity = title
-    ? 0.78 * easeOut(ramp(progress, 0.08, 0.35)) * (1 - easeIn(ramp(progress, 0.72, 0.98)))
-    : 0.78 * (1 - easeInOut(ramp(progress, 0.02, 0.13)));
-  const drift = title ? (progress - 0.5) * 2 : progress * 3.2;
-  const color = season === 'winter' ? (title ? 'rgba(112,139,158,0.64)' : 'rgba(255,255,255,0.92)')
-    : season === 'spring' ? (title ? 'rgba(201,136,152,0.52)' : 'rgba(250,223,230,0.88)')
-    : season === 'summer' ? (title ? 'rgba(213,163,68,0.46)' : 'rgba(255,239,194,0.78)')
-    : 'rgba(185,105,53,0.82)';
-
-  return (
-    <div aria-hidden="true" style={{
-      position: 'absolute', inset: 0, zIndex: title ? 0 : 30, overflow: 'hidden',
-      pointerEvents: 'none', opacity,
-    }}>
-      {ATMOSPHERE_PARTICLES[season].map(([x, y, size, alpha, offset], i) => {
-        const travelX = (season === 'winter' ? 14 : season === 'autumn' ? 8 : 4) * (drift + offset);
-        const travelY = (season === 'winter' ? 28 : season === 'autumn' ? 20 : 10) * (drift + offset);
-        const rotation = (season === 'spring' || season === 'autumn') ? progress * 120 + offset * 180 : 0;
-        const shape = season === 'winter' || season === 'summer'
-          ? { borderRadius: '50%' }
-          : season === 'spring'
-            ? { borderRadius: '75% 20% 75% 20%' }
-            : { borderRadius: '100% 0 100% 0' };
-        return (
-          <span key={i} style={{
-            position: 'absolute', left: `${x + travelX}%`, top: `${y + travelY}%`,
-            width: size, height: season === 'autumn' ? size * 1.3 : size,
-            background: color, opacity: alpha, filter: `blur(${season === 'summer' ? 1.4 : 0.45}px)`,
-            transform: `translate(-50%, -50%) rotate(${rotation}deg)`, ...shape,
-          }} />
-        );
-      })}
-    </div>
-  );
-}
-
 /* ---------- Підпис теми на текстових кадрах ----------
  * Тонкі декоративні шари за контентом (не на фото-кадрах):
  * рамка-кант / градієнт / зерно / акцентна риска / моно-позначка в кутку.
@@ -294,12 +228,10 @@ function SeasonTitle(p) {
   const blur = 16 * (1 - inP);
   const op = inP * (1 - outP);
   const rule = easeOut(ramp(pr, 0.12, 0.5)) * (1 - outP);
-  const season = TITLE_SEASON_OF[p.scene && p.scene.name];
   return (
     <div style={{ position: 'absolute', inset: 0, background: T.bg, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <PageFx T={T} />
-      <SeasonAtmosphere season={season} progress={pr} enabled={window.__ukAtmosphere !== false} />
-      <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', transform: `scale(${scale})`, opacity: op, filter: `blur(${blur}px)` }}>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', transform: `scale(${scale})`, opacity: op, filter: `blur(${blur}px)` }}>
         <div style={{ font: `500 158px ${T.fonts.display}`, letterSpacing: '0.14em', textIndent: '0.14em', color: T.ink }}>{word}</div>
         <div style={{ width: 340 * rule, height: 1, background: T.hair, marginTop: 22 }}></div>
       </div>
@@ -352,7 +284,6 @@ function PhotoSequence(p) {
         <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: n + 2, opacity: 0.10, mixBlendMode: 'overlay',
           backgroundImage: `url("${GRAIN_URI}")`, backgroundSize: '260px 260px' }}></div>
       ) : null}
-      <SeasonAtmosphere season={key} progress={pr} phase="photos" enabled={window.__ukAtmosphere !== false} />
     </div>
   );
 }
@@ -361,6 +292,9 @@ function PhotoSequence(p) {
 const GRAIN_URI = "data:image/svg+xml;utf8," + encodeURIComponent(
   "<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"
 );
+
+/* назва фотокадру -> ключ сезону в window.PHOTOS */
+const SEASON_OF = { 'ФотоЗима': 'winter', 'ФотоВесна': 'spring', 'ФотоЛіто': 'summer', 'ФотоОсінь': 'autumn' };
 
 /* ---------- Кнопка «Тема» + меню вибору ---------- */
 function ThemeSwitcher(props) {
@@ -411,26 +345,6 @@ function ThemeSwitcher(props) {
   );
 }
 
-function AtmosphereToggle({ enabled, onChange, T }) {
-  return (
-    <button
-      type="button"
-      role="switch"
-      aria-checked={enabled}
-      aria-label="Сезонна атмосфера"
-      title={enabled ? 'Вимкнути сезонну атмосферу' : 'Увімкнути сезонну атмосферу'}
-      onClick={() => onChange(!enabled)}
-      style={{
-        width: 42, height: 42, padding: 0, borderRadius: '50%', border: `1px solid ${enabled ? T.accent : T.hair}`,
-        background: enabled ? T.accent : T.bg, color: enabled ? T.bg : T.ink, cursor: 'pointer',
-        font: '400 20px system-ui, sans-serif', lineHeight: 1, boxShadow: '0 6px 22px rgba(0,0,0,0.18)',
-      }}
-    >
-      <span aria-hidden="true" style={{ opacity: enabled ? 1 : 0.42 }}>✦</span>
-    </button>
-  );
-}
-
 /* ---------- Root ---------- */
 function UkraintsiVideo() {
   const themes = window.UK_THEMES || [];
@@ -441,8 +355,6 @@ function UkraintsiVideo() {
     return ok ? saved : (themes[0] && themes[0].id);
   });
   window.__ukThemeId = themeId;
-  const [atmosphere, setAtmosphere] = React.useState(true);
-  window.__ukAtmosphere = atmosphere;
   const T = theme();
 
   const pickTheme = (id) => {
@@ -503,10 +415,9 @@ function UkraintsiVideo() {
 
       <audio ref={audioRef} src={res(AUDIO)} loop preload="auto"></audio>
 
-      {/* Контроли: тема, сезонна атмосфера та звук у правому нижньому куті */}
+      {/* Контроли: «Тема» + «Звук» у правому нижньому куті */}
       <div style={{ position: 'fixed', right: 18, bottom: 18, zIndex: 50, display: 'flex', alignItems: 'flex-end', gap: 10 }}>
         <ThemeSwitcher T={T} value={themeId} onChange={pickTheme} />
-        <AtmosphereToggle T={T} enabled={atmosphere} onChange={setAtmosphere} />
         <button onClick={toggleSound} style={ctrlBtn}>
           <span style={{ fontSize: 13 }}>{sound ? '❚❚' : '▶'}</span>
           <span>{sound ? 'Музика' : 'Звук'}</span>
