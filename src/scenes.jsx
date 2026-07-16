@@ -261,13 +261,17 @@ function PhotoSequence(p) {
         let op = appear;
         if (k === n - 1) op = appear * (1 - easeInOut(clamp((g - (n - OUT)) / OUT, 0, 1)));
         const lp = clamp(g - k, 0, 1.2);
+        const motionSet = (window.PHOTO_MOTION || {})[key] || {};
+        const motion = motionSet[src] || motionSet[src.split('/').pop()] || {};
         const zoomIn = k % 2 === 0;
         const z0 = 1 + 0.06 * amp, z1 = 1 + 0.15 * amp;
-        const kbScale = zoomIn ? lerp(z0, z1, lp) : lerp(z1, z0, lp);
+        const kbScale = motion.scale
+          ? 1 + (lerp(motion.scale[0], motion.scale[1], lp) - 1) * amp
+          : (zoomIn ? lerp(z0, z1, lp) : lerp(z1, z0, lp));
         const dirX = (k % 3 === 0 ? 1 : k % 3 === 1 ? -1 : 0);
         const dirY = (k % 2 === 0 ? -1 : 1);
-        const tx = dirX * lerp(0, 2.2, lp) * amp;
-        const ty = dirY * lerp(0, 1.6, lp) * amp;
+        const tx = motion.x ? lerp(motion.x[0], motion.x[1], lp) * amp : dirX * lerp(0, 2.2, lp) * amp;
+        const ty = motion.y ? lerp(motion.y[0], motion.y[1], lp) * amp : dirY * lerp(0, 1.6, lp) * amp;
         const kb = `scale(${kbScale}) translate(${tx}%, ${ty}%)`;
         return (
           <div key={k} style={{ position: 'absolute', inset: 0, opacity: op, zIndex: k, willChange: 'opacity' }}>
