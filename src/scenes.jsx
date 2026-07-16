@@ -98,13 +98,14 @@ function Opening(p) {
 
 /* ---------- 2. Intro text (другий кадр) ----------
  * «Дихаючі» поля (зверху менше, знизу більше, з боків); читомий кегль/інтерліньяж.
- * Текст — з window.INTRO (чорновий — замінити на фінальний). */
+ * Текст — з window.INTRO. */
 function IntroText(p) {
   const T = theme();
   const pr = p.progress;
-  const data = window.INTRO || { kicker: '', lines: [] };
+  const data = window.INTRO || { kicker: '', text: '' };
   const inP = easeOut(ramp(pr, 0, 0.22));
   const outP = easeIn(ramp(pr, 0.8, 1));
+  const textIn = easeOut(ramp(pr, 0.1, 0.48));
   const op = inP * (1 - outP);
   const y = lerp(40, 0, inP) + lerp(0, 60, outP);
   return (
@@ -120,14 +121,12 @@ function IntroText(p) {
           textTransform: 'uppercase', color: T.accent, marginBottom: 18,
         }}>{data.kicker}</div>
         <div style={{ width: 120, height: 1, background: T.hair, marginBottom: 50 }}></div>
-        <div style={{ font: `500 58px ${T.fonts.display}`, lineHeight: 1.42, color: T.ink, letterSpacing: '0.005em' }}>
-          {data.lines.map((ln, i) => {
-            const ri = easeOut(ramp(pr, 0.1 + i * 0.06, 0.4 + i * 0.06)) * (1 - outP);
-            return (
-              <div key={i} style={{ opacity: ri, transform: `translateY(${lerp(16, 0, ri)}px)` }}>{ln}</div>
-            );
-          })}
-        </div>
+        <div style={{
+          maxWidth: 1280, font: `500 54px ${T.fonts.display}`, lineHeight: 1.35,
+          color: T.ink, letterSpacing: '0.005em', textWrap: 'balance',
+          opacity: textIn * (1 - outP),
+          transform: `translateY(${lerp(16, 0, textIn)}px)`,
+        }}>{data.text}</div>
       </div>
     </div>
   );
