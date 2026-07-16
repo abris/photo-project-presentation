@@ -2,3 +2,4 @@
 **/.DS_Store
 _test_*.html
 *.log
+dist/
