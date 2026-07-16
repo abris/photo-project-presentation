@@ -122,7 +122,7 @@ function IntroText(p) {
         }}>{data.kicker}</div>
         <div style={{ width: 120, height: 1, background: T.hair, marginBottom: 50 }}></div>
         <div style={{
-          maxWidth: 1280, font: `500 54px ${T.fonts.display}`, lineHeight: 1.35,
+          maxWidth: 1280, font: `500 54px ${T.fonts.display}`, lineHeight: 1.52,
           color: T.ink, letterSpacing: '0.005em', textWrap: 'balance',
           opacity: textIn * (1 - outP),
           transform: `translateY(${lerp(16, 0, textIn)}px)`,
