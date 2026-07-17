@@ -10,7 +10,7 @@ window.PHOTOS = {
     'assets/photos/winter/winter-01.jpg', 'assets/photos/winter/winter-02.jpg',
     'assets/photos/winter/winter-03.jpg', 'assets/photos/winter/winter-04.jpg',
     'assets/photos/winter/winter-05.jpg', 'assets/photos/winter/winter-06.jpg',
-    'assets/photos/winter/winter-07.jpg', 'assets/photos/winter/winter-08.jpg',
+    'assets/photos/winter/winter-08.jpg',
     'assets/photos/winter/winter-09.jpg', 'assets/photos/winter/winter-10.jpg',
     'assets/photos/winter/winter-11.jpg', 'assets/photos/winter/winter-12.jpg',
     'assets/photos/winter/winter-13.jpg', 'assets/photos/winter/winter-14.jpg',
@@ -34,6 +34,12 @@ window.PHOTOS = {
     'assets/photos/summer/summer-09.jpg', 'assets/photos/summer/summer-10.jpg',
     'assets/photos/summer/summer-11.jpg', 'assets/photos/summer/summer-12.jpg',
     'assets/photos/summer/summer-13.jpg', 'assets/photos/summer/summer-14.jpg',
+    'assets/photos/summer/summer-15.jpg', 'assets/photos/summer/summer-16.jpg',
+    'assets/photos/summer/summer-17.jpg', 'assets/photos/summer/summer-18.jpg',
+    'assets/photos/summer/summer-19.jpg', 'assets/photos/summer/summer-20.jpg',
+    'assets/photos/summer/summer-21.jpg', 'assets/photos/summer/summer-22.jpg',
+    'assets/photos/summer/summer-23.jpg', 'assets/photos/summer/summer-24.jpg',
+    'assets/photos/summer/summer-25.jpg', 'assets/photos/summer/summer-26.jpg',
   ],
   autumn: [
     'assets/photos/autumn/autumn-01.jpg', 'assets/photos/autumn/autumn-02.jpg',
@@ -46,81 +52,26 @@ window.PHOTOS = {
   ],
 };
 
-/* ---------- Точне кадрування для окремих фото ----------
- * Значення y - у відсотках висоти фото. Позитивний зсув опускає зображення
- * у кадрі, залишаючи більше простору над головами.
+/* ---------- Рух фото ----------
+ * Усі рухи генеруються з поточного порядку window.PHOTOS, тому заміна серії
+ * не успадковує кадрування або напрямки руху від попередніх зображень.
  */
-window.PHOTO_MOTION = {
-  winter: {
-    'winter-01.jpg': { scale: [1.05, 1.11], x: [0.4, 1.7], y: [0.0, 0.4] },
-    'winter-02.jpg': { scale: [1.04, 1.07], x: [-0.4, -1.2], y: [0.3, 0.9] },
-    'winter-03.jpg': { scale: [1.05, 1.11], x: [-0.4, -1.6], y: [0.0, 0.3] },
-    'winter-04.jpg': { scale: [1.05, 1.11], x: [0.0, 0.0], y: [0.0, 0.5] },
-    'winter-05.jpg': { scale: [1.10, 1.05], x: [0.0, 0.8], y: [0.5, 1.1] },
-    'winter-06.jpg': { scale: [1.04, 1.07], x: [-0.3, -1.1], y: [0.0, 0.2] },
-    'winter-07.jpg': { scale: [1.06, 1.04], x: [0.2, 1.0], y: [-0.2, -0.6] },
-    'winter-08.jpg': { scale: [1.05, 1.11], x: [-0.3, -1.3], y: [0.4, 1.5] },
-    'winter-09.jpg': { scale: [1.045, 1.09], x: [0.0, 0.0], y: [0.0, -0.7] },
-    'winter-10.jpg': { scale: [1.05, 1.08], x: [0.0, 0.0], y: [0.8, 1.6] },
-    'assets/photos/winter/winter-11.jpg': {
-      scale: [1.06, 1.08], y: [1.2, 2.0],
-    },
-    'winter-12.jpg': { scale: [1.05, 1.08], x: [0.0, 0.0], y: [0.7, 1.5] },
-    'winter-13.jpg': { scale: [1.025, 1.045], x: [0.0, 0.2], y: [0.0, 0.2] },
-    'winter-14.jpg': { scale: [1.02, 1.04], x: [0.0, 0.0], y: [0.0, 0.2] },
-  },
-  spring: {
-    'spring-01.jpg': { scale: [1.05, 1.11], x: [0.3, 1.3], y: [0.0, 0.4] },
-    'spring-02.jpg': { scale: [1.045, 1.09], x: [0.3, 1.1], y: [-0.2, -0.8] },
-    'spring-03.jpg': { scale: [1.05, 1.11], x: [0.0, 0.3], y: [0.0, 0.4] },
-    'spring-04.jpg': { scale: [1.05, 1.11], x: [0.0, 0.0], y: [0.0, -0.8] },
-    'spring-05.jpg': { scale: [1.045, 1.09], x: [0.0, 0.0], y: [0.0, 0.3] },
-    'spring-06.jpg': { scale: [1.05, 1.11], x: [-0.3, -1.3], y: [0.3, 1.0] },
-    'spring-07.jpg': { scale: [1.03, 1.055], x: [0.0, 0.0], y: [0.0, 0.1] },
-    'spring-08.jpg': { scale: [1.05, 1.11], x: [0.0, 0.0], y: [0.1, 0.7] },
-    'spring-09.jpg': { scale: [1.05, 1.12], x: [0.0, 0.0], y: [0.0, 0.0] },
-    'spring-10.jpg': { scale: [1.035, 1.06], x: [-0.2, -0.7], y: [0.0, 0.3] },
-    'spring-11.jpg': { scale: [1.05, 1.11], x: [0.0, 0.0], y: [0.3, 1.0] },
-    'spring-12.jpg': { scale: [1.045, 1.09], x: [0.0, 0.4], y: [0.0, 0.4] },
-    'spring-13.jpg': { scale: [1.045, 1.09], x: [0.0, 0.0], y: [0.0, 0.5] },
-    'spring-14.jpg': { scale: [1.04, 1.07], x: [0.0, -0.4], y: [0.0, 0.2] },
-    'spring-15.jpg': { scale: [1.04, 1.07], x: [-0.2, -0.8], y: [0.0, -0.4] },
-    'spring-16.jpg': { scale: [1.04, 1.07], x: [0.2, 0.8], y: [0.0, 0.1] },
-    'spring-17.jpg': { scale: [1.05, 1.11], x: [0.0, 0.0], y: [-0.3, -1.2] },
-  },
-  summer: {
-    'summer-01.jpg': { scale: [1.05, 1.12], x: [0.0, 0.0], y: [0.0, 0.4] },
-    'summer-02.jpg': { scale: [1.04, 1.07], x: [-0.2, -0.8], y: [0.0, 0.5] },
-    'summer-03.jpg': { scale: [1.05, 1.11], x: [0.3, 1.3], y: [0.0, 0.2] },
-    'summer-04.jpg': { scale: [1.05, 1.11], x: [0.0, 0.0], y: [0.0, 0.0] },
-    'summer-05.jpg': { scale: [1.05, 1.12], x: [0.0, 0.0], y: [0.0, 0.3] },
-    'summer-06.jpg': { scale: [1.05, 1.12], x: [0.0, -0.5], y: [0.0, 0.2] },
-    'summer-07.jpg': { scale: [1.05, 1.11], x: [-0.3, -1.3], y: [0.0, 0.2] },
-    'summer-08.jpg': { scale: [1.05, 1.11], x: [0.0, 0.0], y: [0.0, 0.4] },
-    'summer-09.jpg': { scale: [1.05, 1.11], x: [-0.3, -1.3], y: [0.0, -0.6] },
-    'summer-10.jpg': { scale: [1.045, 1.09], x: [0.0, 0.3], y: [0.0, 0.4] },
-    'summer-11.jpg': { scale: [1.05, 1.11], x: [0.0, 0.0], y: [0.0, 0.6] },
-    'summer-12.jpg': { scale: [1.05, 1.11], x: [-0.3, -1.3], y: [0.0, 0.2] },
-    'summer-13.jpg': { scale: [1.05, 1.11], x: [0.0, 0.0], y: [-0.3, -1.1] },
-    'summer-14.jpg': { scale: [1.04, 1.07], x: [-0.2, -0.8], y: [0.0, -0.4] },
-  },
-  autumn: {
-    'autumn-01.jpg': { scale: [1.05, 1.11], x: [0.3, 1.2], y: [0.1, 0.9] },
-    'autumn-02.jpg': { scale: [1.045, 1.09], x: [0.0, 0.0], y: [0.0, 0.2] },
-    'autumn-03.jpg': { scale: [1.04, 1.07], x: [-0.2, -1.0], y: [0.0, 0.1] },
-    'autumn-04.jpg': { scale: [1.04, 1.07], x: [0.0, 0.2], y: [-0.2, -0.8] },
-    'autumn-05.jpg': { scale: [1.05, 1.11], x: [0.0, 0.0], y: [0.0, 0.4] },
-    'autumn-06.jpg': { scale: [1.05, 1.11], x: [-0.1, -0.8], y: [0.0, 0.4] },
-    'autumn-07.jpg': { scale: [1.045, 1.09], x: [0.0, 0.0], y: [0.0, 0.3] },
-    'autumn-08.jpg': { scale: [1.05, 1.11], x: [0.0, 0.0], y: [0.0, -0.8] },
-    'autumn-09.jpg': { scale: [1.04, 1.07], x: [0.2, 0.8], y: [0.0, -0.4] },
-    'autumn-10.jpg': { scale: [1.045, 1.09], x: [0.0, 0.0], y: [0.0, 0.4] },
-    'autumn-11.jpg': { scale: [1.045, 1.09], x: [0.0, 0.3], y: [0.0, 0.3] },
-    'autumn-12.jpg': { scale: [1.05, 1.11], x: [0.0, 0.0], y: [0.3, 1.0] },
-    'autumn-13.jpg': { scale: [1.045, 1.09], x: [0.0, 0.0], y: [0.0, 0.3] },
-    'autumn-14.jpg': { scale: [1.05, 1.11], x: [0.0, 0.0], y: [-0.3, -1.1] },
-  },
-};
+function createPhotoMotion(photos) {
+  return Object.fromEntries(photos.map((src, index) => {
+    const zoomIn = index % 2 === 0;
+    const horizontal = index % 3 === 0 ? 1 : index % 3 === 1 ? -1 : 0;
+    const vertical = zoomIn ? -1 : 1;
+    return [src, {
+      scale: zoomIn ? [1.06, 1.15] : [1.15, 1.06],
+      x: [0, horizontal * 2.2],
+      y: [0, vertical * 1.6],
+    }];
+  }));
+}
+
+window.PHOTO_MOTION = Object.fromEntries(
+  Object.entries(window.PHOTOS).map(([season, photos]) => [season, createPhotoMotion(photos)])
+);
 
 /* ---------- Команда проєкту (третій кадр) ---------- */
 window.TEAM = [
