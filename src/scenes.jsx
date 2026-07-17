@@ -241,6 +241,40 @@ function SeasonTitle(p) {
 /* ---------- 6. Photo sequence — повний екран без рамки + Ken Burns + fx ----------
  * Параметри розчинення й силу Ken Burns бере з активної теми (T.motion);
  * ефекти сепія/зерно/віньєтка — з T.fx (тема «Архів»). */
+function FocalPhoto(props) {
+  const imageRef = React.useRef(null);
+  const focus = props.focus || [50, 50];
+  const [origin, setOrigin] = React.useState('50% 50%');
+
+  const updateOrigin = () => {
+    const image = imageRef.current;
+    const frame = image && image.parentElement;
+    if (!image || !frame || !image.naturalWidth || !image.naturalHeight) return;
+
+    const bounds = frame.getBoundingClientRect();
+    const scale = Math.max(bounds.width / image.naturalWidth, bounds.height / image.naturalHeight);
+    const width = image.naturalWidth * scale;
+    const height = image.naturalHeight * scale;
+    const x = (bounds.width - width) / 2 + width * focus[0] / 100;
+    const y = (bounds.height - height) / 2 + height * focus[1] / 100;
+    setOrigin(`${x}px ${y}px`);
+  };
+
+  React.useEffect(() => {
+    updateOrigin();
+    window.addEventListener('resize', updateOrigin);
+    return () => window.removeEventListener('resize', updateOrigin);
+  }, [props.src, focus[0], focus[1]]);
+
+  return (
+    <img ref={imageRef} src={props.src} alt="" onLoad={updateOrigin} style={{
+      position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover',
+      objectPosition: '50% 50%', transform: props.transform, transformOrigin: origin,
+      filter: props.filter || 'none',
+    }} />
+  );
+}
+
 function PhotoSequence(p) {
   const T = theme();
   const pr = p.progress;
@@ -263,6 +297,7 @@ function PhotoSequence(p) {
         const lp = clamp(g - k, 0, 1.2);
         const motionSet = (window.PHOTO_MOTION || {})[key] || {};
         const motion = motionSet[src] || motionSet[src.split('/').pop()] || {};
+        const focus = motion.focus || [50, 50];
         const zoomIn = k % 2 === 0;
         const z0 = 1 + 0.06 * amp, z1 = 1 + 0.15 * amp;
         const kbScale = motion.scale
@@ -275,7 +310,7 @@ function PhotoSequence(p) {
         const kb = `scale(${kbScale}) translate(${tx}%, ${ty}%)`;
         return (
           <div key={k} style={{ position: 'absolute', inset: 0, opacity: op, zIndex: k, willChange: 'opacity' }}>
-            <img src={res(src)} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', transform: kb, filter: fx.filter || 'none' }} />
+          <FocalPhoto src={res(src)} focus={focus} transform={kb} filter={fx.filter} />
           </div>
         );
       })}
