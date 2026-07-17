@@ -38,7 +38,7 @@ window.PHOTOS = {
     'assets/photos/summer/summer-17.jpg', 'assets/photos/summer/summer-18.jpg',
     'assets/photos/summer/summer-19.jpg', 'assets/photos/summer/summer-20.jpg',
     'assets/photos/summer/summer-21.jpg', 'assets/photos/summer/summer-22.jpg',
-    'assets/photos/summer/summer-23.jpg', 'assets/photos/summer/summer-24.jpg',
+    'assets/photos/summer/summer-24.jpg',
     'assets/photos/summer/summer-25.jpg', 'assets/photos/summer/summer-26.jpg',
   ],
   autumn: [
